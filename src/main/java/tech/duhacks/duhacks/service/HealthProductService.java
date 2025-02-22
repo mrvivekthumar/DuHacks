@@ -29,10 +29,10 @@ public class HealthProductService {
     private final UserRepo userRepo;
     private static final ZoneId kolkataZoneId = ZoneId.of("Asia/Kolkata");
 
-    public HealthProductDto add(HealthProductDto hrd){
-        var user = userRepo.findById(hrd.userId()).orElseThrow(() ->  new EntityNotFoundException("User Not Found") );
+    public HealthProductDto add(HealthProductDto hrd) {
+        var user = userRepo.findById(hrd.userId()).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
-        var healthProduct  = HealthProduct.builder()
+        var healthProduct = HealthProduct.builder()
                 .name(hrd.name())
                 .amount(hrd.amount())
                 .quantity(hrd.quantity())
@@ -48,27 +48,27 @@ public class HealthProductService {
         }).collect(Collectors.toSet());
 
         healthProduct.setMedicationSchedules(medicationSchedules); // Associate the schedules with the health product
-        var hrqSave =  healthProductMapper.getHealthProductDto(healthProductRepo.save(healthProduct));
+        var hrqSave = healthProductMapper.getHealthProductDto(healthProductRepo.save(healthProduct));
 
         expiryEmail.addMedicine(healthProduct);
 
-        return  hrqSave;
+        return hrqSave;
     }
 
-    public boolean deleteProduct(Long id){
+    public boolean deleteProduct(Long id) {
         healthProductRepo.deleteById(id);
         healthProductRepo.findById(id).orElseThrow(() -> new AuthException("Failed to delete Product"));
         expiryEmail.removeMedicine(id);
         return true;
     }
 
-    public List<HealthProductDto> getHealthProductByUser(Long id){
-        userRepo.findById(id).orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+    public List<HealthProductDto> getHealthProductByUser(Long id) {
+        userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
         ZonedDateTime kolkataZonedTime = ZonedDateTime.now(kolkataZoneId);
         LocalDate kolkataLocalTime = kolkataZonedTime.toLocalDate();
 
-        var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfter(id,0,kolkataLocalTime);
+        var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfter(id, 0, kolkataLocalTime);
         return res.stream().map(healthProductMapper::getHealthProductDto).toList();
     }
 
