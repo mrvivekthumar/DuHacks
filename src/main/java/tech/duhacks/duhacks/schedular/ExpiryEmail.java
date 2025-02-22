@@ -78,6 +78,15 @@ public class ExpiryEmail implements Runnable{
         }
     }
 
+    public void removeMedicine(Long id){
+        lock.lock();
+        try{
+            taskQueue.removeIf(e -> e.getId().equals(id));
+        } finally {
+            lock.unlock();
+        }
+    }
+
     @Override
     public void run() {
         while (true) {

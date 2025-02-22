@@ -33,6 +33,16 @@ public class GlobalExceptionHandler {
                 .body(new ErrorResponse(errors));
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handle(Exception exp){
+        var errors = new HashMap<String,String>();
+        errors.put("error",exp.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(errors));
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handle(MethodArgumentNotValidException exp){
