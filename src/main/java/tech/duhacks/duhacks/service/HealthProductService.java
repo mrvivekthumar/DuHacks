@@ -3,7 +3,6 @@ package tech.duhacks.duhacks.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import tech.duhacks.duhacks.dto.HealthProductDto;
 import tech.duhacks.duhacks.exception.AuthException;
 import tech.duhacks.duhacks.model.HealthProduct;
@@ -12,7 +11,11 @@ import tech.duhacks.duhacks.repository.HealthProductRepo;
 import tech.duhacks.duhacks.repository.UserRepo;
 import tech.duhacks.duhacks.schedular.ExpiryEmail;
 
-import java.util.MissingResourceException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -24,6 +27,7 @@ public class HealthProductService {
     private final HealthProductMapper healthProductMapper;
     private final ExpiryEmail expiryEmail;
     private final UserRepo userRepo;
+    private static final ZoneId kolkataZoneId = ZoneId.of("Asia/Kolkata");
 
     public HealthProductDto add(HealthProductDto hrd){
         var user = userRepo.findById(hrd.userId()).orElseThrow(() ->  new EntityNotFoundException("User Not Found") );
@@ -56,6 +60,16 @@ public class HealthProductService {
         healthProductRepo.findById(id).orElseThrow(() -> new AuthException("Failed to delete Product"));
         expiryEmail.removeMedicine(id);
         return true;
+    }
+
+    public List<HealthProductDto> getHealthProductByUser(Long id){
+        userRepo.findById(id).orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+
+        ZonedDateTime kolkataZonedTime = ZonedDateTime.now(kolkataZoneId);
+        LocalDate kolkataLocalTime = kolkataZonedTime.toLocalDate();
+
+        var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfter(id,0,kolkataLocalTime);
+        return res.stream().map(healthProductMapper::getHealthProductDto).toList();
     }
 
 }

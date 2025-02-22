@@ -24,6 +24,7 @@ public class HealthProduct {
     private String name;
     private Integer quantity;
     private LocalDate expiryDate;
+    private Integer lowQuantity;
     private Float amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
