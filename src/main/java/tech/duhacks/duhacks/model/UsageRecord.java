@@ -5,23 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "du_taken")
-public class Taken {
+@Table(name = "du_usagerecord")
+public class UsageRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "medicine_id", nullable = false)  // Foreign key to Medicine
-    private Medicine medicine;
+    @JoinColumn(name = "healthPorduct_id", nullable = false)  // Foreign key to healthPorduct
+    private HealthProduct healthPorduct;
 
     private Boolean isTaken;
 

@@ -7,21 +7,20 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 
-
 @Getter
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "du_intakeMedicine")
-public class IntakeMedicine {
+@Table(name = "du_medicationschedule")
+public class MedicationSchedule {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "medicine_id", nullable = false)
-    private Medicine medicine;
+    @JoinColumn(name = "healthPorduct_id", nullable = false)
+    private HealthProduct healthPorduct;
 
     private LocalTime time;
 

@@ -12,8 +12,8 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "du_medicine")
-public class Medicine {
+@Table(name = "du_healthproduct")
+public class HealthProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -25,7 +25,7 @@ public class Medicine {
 //    private Date cr
     private Float amount;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "medicine")
-    private Set<IntakeMedicine> intakeMedicines;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "healthPorduct")
+    private Set<MedicationSchedule> medicationSchedules;
 
 }

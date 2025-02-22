@@ -3,7 +3,6 @@ package tech.duhacks.duhacks.service;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import tech.duhacks.duhacks.dto.UserReq;
 import tech.duhacks.duhacks.exception.AuthException;
 import tech.duhacks.duhacks.model.User;
 import tech.duhacks.duhacks.repository.UserRepo;
@@ -16,20 +15,21 @@ public class UserService {
 
     private final UserMapper userMapper;
 
-    public User login(UserReq userReq) {
-        userRepo.findOneByEmail(userReq.email()).ifPresent(user -> {
-            throw new AuthException("User with email %s already exists.".formatted(userReq.email()));
+    public User signUp(User user) {
+
+        userRepo.findOneByEmail(user.getEmail()).ifPresent(isUser -> {
+            throw new AuthException("User with email %s already exists.".formatted(isUser.getEmail()));
         });
 
-        userRepo.save(userMapper.getUser(userReq));
-        return userRepo.findOneByEmail(userReq.email()).orElse(null);
+        userRepo.save(user);
+        return userRepo.findOneByEmail(user.getEmail()).orElse(null);
     }
 
-    public User signIn(UserReq userReq){
-        var user = userRepo.findOneByEmail(userReq.email()).orElseThrow(() -> new EntityNotFoundException("User with email %s not found".formatted(userReq.email())));
+    public User signIn(User user){
+        var existingUser = userRepo.findOneByEmail(user.getEmail()).orElseThrow(() -> new EntityNotFoundException("User with email %s not found".formatted(user.getEmail())));
 
-        if(!user.getPassword().equals(userReq.password()) ){
-            throw  new AuthException("Password Mismatch");
+        if(!existingUser.getPassword().equals(user.getPassword()) ){
+            throw  new AuthException("Password Mismatched");
         }
 
         return user;

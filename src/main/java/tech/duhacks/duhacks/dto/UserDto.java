@@ -1,6 +1,6 @@
 package tech.duhacks.duhacks.dto;
 
-public record UserRes(
+public record UserDto(
         Long id
 ) {
 }
