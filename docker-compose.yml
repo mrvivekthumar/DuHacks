@@ -1,9 +1,9 @@
 services:
   postgres:
-    container_name: ms_postgres
+    container_name: du_postgres
     image: postgres
     environment:
-      POSTGRES_USER: root
+      POSTGRES_USER: duhacks
       POSTGRES_PASSWORD: Mr.VivekThumar@2004
       PGDATA: /var/lib/postgresql/data
     ports:

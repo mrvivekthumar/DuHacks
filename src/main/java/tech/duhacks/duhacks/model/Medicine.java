@@ -22,6 +22,7 @@ public class Medicine {
     private String name;
     private Integer quantity;
     private Date expiryDate;
+//    private Date cr
     private Float amount;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "medicine")
