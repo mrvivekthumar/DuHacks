@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: duhacksbackend
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: Mr.VivekThumar@2004
+    url: jdbc:postgresql://localhost:5432/duhacks
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+
+server:
+  port: 8888
+
