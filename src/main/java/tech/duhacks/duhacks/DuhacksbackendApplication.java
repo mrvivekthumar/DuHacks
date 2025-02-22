@@ -9,5 +9,4 @@ public class DuhacksbackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(DuhacksbackendApplication.class, args);
     }
-
 }

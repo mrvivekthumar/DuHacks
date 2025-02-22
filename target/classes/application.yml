@@ -3,7 +3,7 @@ spring:
     name: duhacksbackend
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
+    username: duhacks
     password: Mr.VivekThumar@2004
     url: jdbc:postgresql://localhost:5432/duhacks
   jpa:
@@ -11,7 +11,17 @@ spring:
       ddl-auto: create
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: darkdark2189@gmail.com
+    password: ppofakoutvdyrffg
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 server:
   port: 8888
 

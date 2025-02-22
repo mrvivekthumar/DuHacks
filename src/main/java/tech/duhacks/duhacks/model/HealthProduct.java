@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 
@@ -21,9 +23,12 @@ public class HealthProduct {
 
     private String name;
     private Integer quantity;
-    private Date expiryDate;
-//    private Date cr
+    private LocalDate expiryDate;
     private Float amount;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "healthPorduct")
     private Set<MedicationSchedule> medicationSchedules;
