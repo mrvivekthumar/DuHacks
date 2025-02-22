@@ -19,8 +19,8 @@ public class UsageRecord {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "healthPorduct_id", nullable = false)  // Foreign key to healthPorduct
-    private HealthProduct healthPorduct;
+    @JoinColumn(name = "healthProduct_id", nullable = false)  // Foreign key to healthProduct
+    private HealthProduct healthProduct;
 
     private Boolean isTaken;
 

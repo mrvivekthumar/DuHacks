@@ -19,8 +19,8 @@ public class MedicationSchedule {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "healthPorduct_id", nullable = false)
-    private HealthProduct healthPorduct;
+    @JoinColumn(name = "healthProduct_id", nullable = false)
+    private HealthProduct healthProduct;
 
     private LocalTime time;
 
