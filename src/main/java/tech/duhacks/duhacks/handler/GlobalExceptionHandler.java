@@ -24,10 +24,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handle(EntityNotFoundException exp){
+    public ResponseEntity<ErrorResponse> handle(EntityNotFoundException exp){
+        var errors = new HashMap<String,String>();
+        errors.put("error",exp.getMessage());
+
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(exp.getMessage());
+                .body(new ErrorResponse(errors));
     }
 
 

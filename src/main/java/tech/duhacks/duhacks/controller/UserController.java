@@ -15,8 +15,14 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<User> createUser(@RequestBody UserReq userReq) {
-        var user = userService.login(userReq);
+    public ResponseEntity<String> signUp(@RequestBody UserReq userReq) {
+        userService.login(userReq);
+        return ResponseEntity.ok("User sign up");
+    }
+
+    @GetMapping("/signIn")
+    public ResponseEntity<User> signIn(@RequestBody UserReq userReq) {
+        var user = userService.signIn(userReq);
         return ResponseEntity.ok(user);
     }
 
