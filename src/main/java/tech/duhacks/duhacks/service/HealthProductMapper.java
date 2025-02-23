@@ -5,6 +5,8 @@ import tech.duhacks.duhacks.dto.HealthProductDto;
 import tech.duhacks.duhacks.model.HealthProduct;
 import tech.duhacks.duhacks.model.MedicationSchedule;
 
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,7 +20,7 @@ public class HealthProductMapper {
                 hp.getExpiryDate(),
                 hp.getAmount(),
                 hp.getUser().getId(),
-                hp.getMedicationSchedules().stream().map(MedicationSchedule::getTime).collect(Collectors.toSet())
+                hp.getMedicationSchedules().stream().map(a -> a.getTime().format( DateTimeFormatter.ofPattern("HH:mm"))).collect(Collectors.toList())
         );
     }
 }

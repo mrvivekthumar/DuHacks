@@ -14,21 +14,19 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public ResponseEntity<String> signUp(@RequestBody User user) {
-        userService.signUp(user);
-        return ResponseEntity.ok("User sign up successfully");
+    public ResponseEntity<User> signUp(@RequestBody User user) {
+        return ResponseEntity.ok(userService.signUp(user));
     }
 
     @GetMapping("/signIn")
     public ResponseEntity<User> signIn(@RequestBody User user) {
-        var User = userService.signIn(user);
-        return ResponseEntity.ok(User);
+        return ResponseEntity.ok( userService.signIn(user));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable("id") Long id) {
         userService.delete(id);
-        return ResponseEntity.ok("User is Deleted with this id " + id );
+        return ResponseEntity.ok("User is Deleted with this id %d".formatted(id));
     }
 
 }

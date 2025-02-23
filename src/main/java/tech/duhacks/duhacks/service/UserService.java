@@ -21,8 +21,7 @@ public class UserService {
             throw new AuthException("User with email %s already exists.".formatted(isUser.getEmail()));
         });
 
-        userRepo.save(user);
-        return userRepo.findOneByEmail(user.getEmail()).orElse(null);
+        return userRepo.save(user);
     }
 
     public User signIn(User user){
@@ -32,7 +31,7 @@ public class UserService {
             throw  new AuthException("Password Mismatched");
         }
 
-        return user;
+        return existingUser;
     }
 
     public void delete(Long id) {

@@ -12,9 +12,9 @@ import tech.duhacks.duhacks.repository.UserRepo;
 import tech.duhacks.duhacks.schedular.ExpiryEmail;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,19 +30,21 @@ public class HealthProductService {
     private static final ZoneId kolkataZoneId = ZoneId.of("Asia/Kolkata");
 
     public HealthProductDto add(HealthProductDto hrd){
-        var user = userRepo.findById(hrd.userId()).orElseThrow(() ->  new EntityNotFoundException("User Not Found") );
+        var user = userRepo.findById(hrd.getUserId()).orElseThrow(() ->  new EntityNotFoundException("User Not Found") );
 
         var healthProduct  = HealthProduct.builder()
-                .name(hrd.name())
-                .amount(hrd.amount())
-                .quantity(hrd.quantity())
-                .expiryDate(hrd.expiryDate())
+                .name(hrd.getName())
+                .amount(hrd.getAmount())
+                .lowQuantity(hrd.getQuantity() * 0.1f)
+                .quantity(hrd.getQuantity())
+                .fullQuantity(hrd.getQuantity())
+                .expiryDate(hrd.getExpiryDate())
                 .user(user)
                 .build();
 
-        Set<MedicationSchedule> medicationSchedules = hrd.times().stream().map(time -> {
+        Set<MedicationSchedule> medicationSchedules = hrd.getTimes().stream().map(time -> {
             MedicationSchedule schedule = new MedicationSchedule();
-            schedule.setTime(time);
+            schedule.setTime(LocalTime.parse(time));
             schedule.setHealthProduct(healthProduct); // This will link the schedule to the health product
             return schedule;
         }).collect(Collectors.toSet());
@@ -69,6 +71,16 @@ public class HealthProductService {
         LocalDate kolkataLocalTime = kolkataZonedTime.toLocalDate();
 
         var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfter(id,0,kolkataLocalTime);
+        return res.stream().map(healthProductMapper::getHealthProductDto).toList();
+    }
+
+    public List<HealthProductDto> getLowHealthProductByUser(Long id){
+        userRepo.findById(id).orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+
+        ZonedDateTime kolkataZonedTime = ZonedDateTime.now(kolkataZoneId);
+        LocalDate kolkataLocalTime = kolkataZonedTime.toLocalDate();
+
+        var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfterAndLowQuantityGreaterThanEqual(id,kolkataLocalTime);
         return res.stream().map(healthProductMapper::getHealthProductDto).toList();
     }
 

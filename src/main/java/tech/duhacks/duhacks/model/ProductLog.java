@@ -4,10 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -15,33 +11,27 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "du_healthproduct")
-public class HealthProduct {
-
+@Table(name = "du_productlog")
+public class ProductLog {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
-
-    private String name;
-    private Float quantity;
-    private LocalDate expiryDate;
-    private Float lowQuantity;
-    private Float fullQuantity;
-    private Float amount;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "healthProduct")
-    private Set<MedicationSchedule> medicationSchedules;
-
     @Column(nullable = false, updatable = false)
     private Timestamp createdAt;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "healthProduct_id", nullable = false)
+    private HealthProduct healthProduct;
+
+    private Boolean isTaken;
 
     @PrePersist
     public void onPrePersist() {
         this.createdAt = new Timestamp(System.currentTimeMillis());
     }
-
 }
