@@ -29,4 +29,5 @@ public interface HealthProductRepo extends JpaRepository<HealthProduct, Long> {
     @Query("UPDATE HealthProduct h SET h.quantity = :quantity WHERE h.id = :id")
     void updateQuantityById(@Param("id") Long id, @Param("quantity") float quantity);
 
+    List<HealthProduct> findAllByUserId(Long id);
 }

@@ -35,6 +35,11 @@ public class HealthProductController {
     public  ResponseEntity<List<HealthProductDto>> getLowUserProduct(@PathVariable("id")Long id){
         return ResponseEntity.ok(healthProductService.getLowHealthProductByUser(id));
     }
+
+    @GetMapping("/order/{id}")
+    public  ResponseEntity<List<HealthProductDto>> getAllUserOrder(@PathVariable("id")Long id){
+        return ResponseEntity.ok(healthProductService.getAllOrder(id));
+    }
 //    @PostMapping("/{id}/reorder/{quantity}")
 //    public HealthProduct reorder(@PathVariable Long id, @PathVariable Integer quantity) {
 //        return healthProductService.reorderProduct(id, quantity);

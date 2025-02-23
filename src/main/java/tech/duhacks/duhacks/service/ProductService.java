@@ -12,6 +12,7 @@ import tech.duhacks.duhacks.repository.HealthProductRepo;
 import tech.duhacks.duhacks.repository.ProductLogRepo;
 import tech.duhacks.duhacks.repository.UserRepo;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -22,13 +23,13 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ProductService {
 
-    private final static ZonedDateTime kolkataTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
     private final ProductLogRepo productRepo;
     private final UserRepo userRepo;
     private final HealthProductRepo healthProductRepo;
 
     @Transactional
     public void add(ProductLogDto pd){
+//        ZonedDateTime kolkataTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
         var user = userRepo.findById(pd.getUserId()).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
 
         var hp = healthProductRepo.findById(pd.getHealthProductId()).orElseThrow(()->new EntityNotFoundException("Product Not Found"));
@@ -54,6 +55,7 @@ public class ProductService {
 
     public List<ProductLogTotalDto> getLogForTime(Long userId,Integer days) {
         userRepo.findById(userId).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+        ZonedDateTime kolkataTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
 
         ZonedDateTime dateFromKolkata = kolkataTime.minusDays(days);
         LocalDateTime dateFrom = dateFromKolkata.toLocalDateTime();
@@ -80,4 +82,22 @@ public class ProductService {
                 })
                 .collect(Collectors.toList());
     }
+
+//    public List<ProductLogTotalDto> getOneDay(Long id){
+//        userRepo.findById(id).orElseThrow(() -> new EntityNotFoundException("User Not Found"));
+//
+//        ZonedDateTime kolkataTime = ZonedDateTime.now(ZoneId.of("Asia/Kolkata"));
+//        LocalDateTime now = kolkataTime.toLocalDateTime();
+//        LocalDateTime startOfDay = now.toLocalDate().atStartOfDay(); // Start of the day
+//        LocalDateTime endOfDay = startOfDay.plusDays(1).minusNanos(1);
+//
+//        var res = productRepo.findAllByUserIdAndCreatedAtBetween(id,startOfDay,endOfDay);
+//
+//        if(res.size() == 0){
+//            var ans = healthProductRepo.findAllByUserId(id);
+//
+//        }
+//
+//        return
+//    }
 }

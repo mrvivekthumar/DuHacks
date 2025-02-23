@@ -22,4 +22,5 @@ public class HealthProductDto{
         Float amount;
         Long userId;
         List<String> times;
+        String createdAt;
 }

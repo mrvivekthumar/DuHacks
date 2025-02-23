@@ -20,7 +20,8 @@ public class HealthProductMapper {
                 hp.getExpiryDate(),
                 hp.getAmount(),
                 hp.getUser().getId(),
-                hp.getMedicationSchedules().stream().map(a -> a.getTime().format( DateTimeFormatter.ofPattern("HH:mm"))).collect(Collectors.toList())
+                hp.getMedicationSchedules().stream().map(a -> a.getTime().format( DateTimeFormatter.ofPattern("HH:mm"))).collect(Collectors.toList()),
+                hp.getCreatedAt().toString()
         );
     }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import tech.duhacks.duhacks.dto.HealthProductDto;
+import tech.duhacks.duhacks.dto.ProductLogTotalDto;
 import tech.duhacks.duhacks.exception.AuthException;
 import tech.duhacks.duhacks.model.HealthProduct;
 import tech.duhacks.duhacks.model.MedicationSchedule;
@@ -71,6 +72,14 @@ public class HealthProductService {
         LocalDate kolkataLocalTime = kolkataZonedTime.toLocalDate();
 
         var res = healthProductRepo.findAllByUserIdAndQuantityGreaterThanAndExpiryDateAfter(id,0,kolkataLocalTime);
+        return res.stream().map(healthProductMapper::getHealthProductDto).toList();
+    }
+
+    public List<HealthProductDto> getAllOrder(Long id){
+        userRepo.findById(id).orElseThrow(()-> new EntityNotFoundException("User Not Found"));
+
+        var res = healthProductRepo.findAllByUserId(id);
+
         return res.stream().map(healthProductMapper::getHealthProductDto).toList();
     }
 
